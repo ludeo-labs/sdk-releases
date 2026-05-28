@@ -1,0 +1,49 @@
+# === Text normalization ===
+# Auto-detect text files and normalize line endings to LF in the repo.
+* text=auto eol=lf
+
+# Explicit text overrides (these are reasonably auto-detected too, but pin them).
+*.md       text
+*.txt      text
+*.cmake    text
+*.h        text
+*.hpp      text
+*.html     text
+*.css      text
+*.js       text
+*.json     text
+*.svg      text
+CMakeLists.txt text
+
+# === LFS-tracked binaries ===
+# GitHub hard-rejects non-LFS files >100 MB. SDK ships PDBs and Android .so
+# files in the 300–400 MB range, so anything binary-shaped goes through LFS.
+
+# Windows
+*.dll      filter=lfs diff=lfs merge=lfs -text
+*.pdb      filter=lfs diff=lfs merge=lfs -text
+*.lib      filter=lfs diff=lfs merge=lfs -text
+*.exe      filter=lfs diff=lfs merge=lfs -text
+
+# Linux / Android
+*.so       filter=lfs diff=lfs merge=lfs -text
+*.so.*     filter=lfs diff=lfs merge=lfs -text
+*.a        filter=lfs diff=lfs merge=lfs -text
+
+# macOS / iOS (future-proofing — currently unused but cheap to include)
+*.dylib    filter=lfs diff=lfs merge=lfs -text
+*.framework/** filter=lfs diff=lfs merge=lfs -text
+
+# Archives / packages
+*.zip      filter=lfs diff=lfs merge=lfs -text
+*.tar      filter=lfs diff=lfs merge=lfs -text
+*.tar.gz   filter=lfs diff=lfs merge=lfs -text
+*.tgz      filter=lfs diff=lfs merge=lfs -text
+*.aar      filter=lfs diff=lfs merge=lfs -text
+*.jar      filter=lfs diff=lfs merge=lfs -text
+
+# Small binary assets in the Doxygen output — kept as regular blobs (each is
+# tiny, well under the 100 MB limit; tracking them in LFS would inflate the
+# LFS object count for no benefit).
+Documentation/html/**/*.png  binary
+Documentation/html/**/*.ico  binary
