@@ -1,2 +1,4 @@
-# sdk-releases
-This repo will have all releases of ludeo sdk
+# Ludeo Core SDK
+
+Take a look at the `.\Documentation` folder.
+
