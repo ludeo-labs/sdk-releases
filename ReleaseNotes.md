@@ -8,6 +8,16 @@
 
 ## Fixes
 
+# v4.2.1
+
+## Improvements
+* ludeo_Tick log has now been moved to logging level Verbose.
+
+## Fixes
+* Fixed breaking bug in Echo - Ludeos using 4.2.0 couldn't run on the cloud. WS principal id is now 1:1 connection id.
+* Fixed a bug where ImGui will appear alongside the platform's overlay on cloud.
+* Fix for hardcoded ImGui overlay values.
+
 # v4.2.0
 
 ## Breaking changes
