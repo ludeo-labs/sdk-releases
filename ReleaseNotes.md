@@ -8,6 +8,11 @@
 
 ## Fixes
 
+# v4.2.2
+
+## Fixes
+* Fixed the released version not being stamped into the binaries; the version is now stamped via the `LUDEOSDK_VERSION` override.
+
 # v4.2.1
 
 ## Improvements
