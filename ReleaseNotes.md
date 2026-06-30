@@ -8,6 +8,18 @@
 
 ## Fixes
 
+# v4.2.3
+
+## Improvements
+* Removed the Gameface dependency and its leftovers (including OpenAL) from the SDK and third-party Deps, completing the migration to the ImGui-based overlay.
+
+## Fixes
+* Fixed the local Ludeo flow — the launcher-provided user id (e.g. the Steam id) is now sent as the `launcher_id` query parameter on the Echo WebSocket connections, captured at session activation.
+* Fixed a deadlock during DX12 context shutdown (Steam overlay with `d3d11on12`) caused by the function-hook dispatch holding an exclusive lock across re-entrant calls into foreign code. Dispatch now takes a shared lock, and unhook drains in-flight dispatches before freeing the trampoline.
+* Fixed false-positive `Error` logs during session-activation config parsing — the renamed `MarkHighlight` action, the deprecated `actionDataBufferSize` field, and the optional `PerformanceMonitor` endpoint no longer report spurious errors.
+* Fixed a spurious `Json key 'url' not found` error logged on every mark-highlight against the Echo backend; the removed `url` field is no longer read from the response.
+* Stopped the SDK from re-issuing the performance-monitor request every interval after the monitor endpoint returns a 404; monitoring is now disabled for the rest of the session, while transient failures still retry as before.
+
 # v4.2.2
 
 ## Fixes

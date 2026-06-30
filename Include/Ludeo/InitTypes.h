@@ -92,7 +92,7 @@ LUDEO_ENUM_START(LudeoLogCategory)
 	LUDEO_ENUM_VALUE(LudeoLogCategory, Overlay, 5)
 
 	/**
-	 * Log category for the logging coming from Coherent's gameface
+	 * Log category for the logging coming from Coherent
 	 */
 	LUDEO_ENUM_VALUE(LudeoLogCategory, Coherent, 6)
 
