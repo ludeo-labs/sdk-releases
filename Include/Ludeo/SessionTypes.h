@@ -164,6 +164,9 @@ LUDEO_STRUCT_START(LudeoSessionActivateParams)
 	 * Explicit authentication details allows working around any unforeseen problems with either the SDK or client design, if
 	 * for some reason the SDK can't retrieve the required information.
 	 * Also useful during development or for testing scenarios where e.g Steam might not be running.
+	 *
+	 * NOTE: If the machine provides a Ludeo cloud token (LUDEO_CLOUD_TOKEN environment variable or -ludeoCloudToken command
+	 * line parameter), cloud token authentication takes precedence and these details are ignored.
 	 */
 	void* authDetails;
 

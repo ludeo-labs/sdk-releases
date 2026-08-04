@@ -8,6 +8,24 @@
 
 ## Fixes
 
+# v4.2.5
+
+## New features
+* The position of the in-game notification toast (capture hints and confirmations) can now be configured per environment from Studio Lab (Advanced Settings --> Ludeo Overlays Position --> Notifications), like the Mid-Play Screen. Games without a configured position keep the previous placement.
+
+## Improvements
+* The in-process (ImGui) overlay now connects to the Echo WebSocket in text mode as a `ui` client, replacing the legacy session WebSocket endpoint. The overlay connection starts only once a valid auth token is available and reuses the session's `principal_id` (connection id).
+* Auth tokens passed on WebSocket connection URLs are now redacted from SDK logs in release builds (`token=<Redacted>`), matching the existing `userId` redaction.
+
+# v4.2.4
+
+
+## New features
+
+## Improvements
+* Cloud Token authentication now has highest preference (Cloud --> explicit --> implicit).
+## Fixes
+* Fixed a bug where the cursor would disappear in the Unity editor after SDK authentication.
 # v4.2.3
 
 ## Improvements

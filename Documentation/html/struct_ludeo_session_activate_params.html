@@ -64,7 +64,7 @@
   <td id="projectlogo"><img alt="Logo" src="Ludeo_Logo.svg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">LudeoSDK
-   &#160;<span id="projectnumber">4.2.3.0</span>
+   &#160;<span id="projectnumber">4.2.5.0</span>
    </div>
    <div id="projectbrief">LudeoSDK Core Api</div>
   </td>
@@ -210,7 +210,8 @@ const char *&#160;</td><td class="memItemRight" valign="bottom"><b>apiKey</b></t
 
 <p>Pointer to one of the Ludeo&lt;NAME&gt;AuthDetails structs or nulled. </p>
 <p>If nulled, the SDK will try to automatically deduce authentication based on the current platform/environment. For example, on Platforms that support Steam, the SDK will check if the Steamworks dll is loaded and attempts to retrieve the user information. Note that the SDK doesn't initialize Steamworks (or any other supported provider). That's the responsibility of the client. If the client didn't initialize any of the supported providers (e.g: Steamworks), then authentication will fail with <a class="el" href="group___common.html#gga25c3ca999f17b60e16a9e1cb6ebb5265aa39aaf87ba244e71917032f4318434fd" title="Invalid authentication details E.g: The wrong API key was specified, or authentication failed (either...">LudeoResult::InvalidAuth</a>.</p>
-<p>Explicit authentication details allows working around any unforeseen problems with either the SDK or client design, if for some reason the SDK can't retrieve the required information. Also useful during development or for testing scenarios where e.g Steam might not be running. </p>
+<p>Explicit authentication details allows working around any unforeseen problems with either the SDK or client design, if for some reason the SDK can't retrieve the required information. Also useful during development or for testing scenarios where e.g Steam might not be running.</p>
+<p>NOTE: If the machine provides a Ludeo cloud token (LUDEO_CLOUD_TOKEN environment variable or -ludeoCloudToken command line parameter), cloud token authentication takes precedence and these details are ignored. </p>
 
 </div>
 </div>
