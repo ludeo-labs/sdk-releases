@@ -259,6 +259,13 @@ LUDEO_DECLARE_FUNC(void) ludeo_RemoveNotification(LudeoNotificationId notificati
  *		to `"1"` before launching the game. The SDK reads it at session
  *		activation. A subsequent `ludeo_Command` call overrides it (last
  *		writer wins).
+ *
+ *		In addition, the backend can control AI mode per game: when the game
+ *		configuration (fetched during session activation) carries a boolean
+ *		`game.highlightConfig.autoCapture` field, that value takes effect
+ *		for the session, overriding whatever was set locally. When the field
+ *		is absent, the locally configured value (command / environment
+ *		variable / command line) is kept unchanged.
  *	* **Value**:
  *		* `"0"` (default) - SDK ignores `capture_moment` events.
  *		* `"1"` - SDK acts on `capture_moment` events.

@@ -64,7 +64,7 @@
   <td id="projectlogo"><img alt="Logo" src="Ludeo_Logo.svg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">LudeoSDK
-   &#160;<span id="projectnumber">4.2.5.0</span>
+   &#160;<span id="projectnumber">4.2.7.0</span>
    </div>
    <div id="projectbrief">LudeoSDK Core Api</div>
   </td>
@@ -244,6 +244,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ludeo_RemoveNotificat
 <p><code>backend-initiated-moment-capture</code></p><ul>
 <li><p class="startli"><b>Description</b>: Opts the SDK into AI mode. When enabled, <code>capture_moment</code> events received over the session WebSocket will trigger a highlight capture via the standard markHighlight flow (equivalent to a manual F9 press). Can be called at any time.</p>
 <p class="startli">AI mode can also be enabled without source-level changes by setting the <code>LUDEO_BACKEND_INITIATED_MOMENT_CAPTURE</code> environment variable (or passing <code>-ludeoBackendInitiatedMomentCapture</code> on the command line) to <code>"1"</code> before launching the game. The SDK reads it at session activation. A subsequent <code>ludeo_Command</code> call overrides it (last writer wins).</p>
+<p class="startli">In addition, the backend can control AI mode per game: when the game configuration (fetched during session activation) carries a boolean <code>game.highlightConfig.autoCapture</code> field, that value takes effect for the session, overriding whatever was set locally. When the field is absent, the locally configured value (command / environment variable / command line) is kept unchanged.</p>
 </li>
 <li><b>Value</b>:<ul>
 <li><code>"0"</code> (default) - SDK ignores <code>capture_moment</code> events.</li>

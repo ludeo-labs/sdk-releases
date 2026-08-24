@@ -1,12 +1,30 @@
-# Next Release
-
-## Breaking changes
+# v4.2.7
 
 ## New features
+* Automatic moment capture (backend-initiated moment capture) can now be turned on or off per game from the backend, via the Studio Lab "Auto Capture" toggle. When the game configuration carries a boolean `game.highlightConfig.autoCapture`, that value takes effect for the session and overrides whatever was set locally (the `LUDEO_BACKEND_INITIATED_MOMENT_CAPTURE` environment variable / command line, or the `backend-initiated-moment-capture` command). When the field is absent the locally configured value is kept unchanged.
 
 ## Improvements
+* The overlay's auto-capture badge now reads its enabled state from the same single source of truth as the rest of the SDK (`gCmds.backendInitiatedMomentCapture`) instead of sampling the `LUDEO_BACKEND_INITIATED_MOMENT_CAPTURE` environment variable directly, so a game enabled through the backend configuration shows the badge too.
 
 ## Fixes
+* Fixed the auto-capture badge ignoring the configured notification position. The badge was pinned to the top-left corner of the screen while the creator notification toast beside it already followed the per-environment position from Studio Lab (Advanced Settings --> Ludeo Overlays Position --> Notifications), so a game that moved its notifications was left with a badge in the opposite corner. Both now use the same position.
+
+# v4.2.6
+
+## New features
+* Added a creator-flow upload-status toast to the overlay. While a moment is uploading, the overlay shows a persistent "Saving your moment / Uploading…" card with live batch progress ("Saving N moments" and an "X of Y saved" line), then a "Success!" / "Upload failed" result so the player knows when it's safe to exit the game.
+
+## Improvements
+* A marked moment now reports a single terminal outcome (`GlobalDelegates::onHighlightUploadCompleted`) from whichever stage ends it -- the mark request, the `capture_video_request` handshake, the ongoing-highlight watchdog, or the video upload. Previously only the video upload stage reported anything, so a moment that died earlier failed silently and UI layers had to fall back on their own timeouts.
+* The creator screen owns upload batch counting internally, tracking active/saved/total uploads and per-batch failure state directly instead of relying on counts pushed through the upload event payloads.
+* The overlay's upload safety timeout -- the fallback that flips a never-completing "Uploading..." card to the failure toast -- was raised from 60 seconds to 5 minutes and now re-arms on upload progress rather than on each new capture. Every known failure is reported the moment it happens, so the timeout only covers a broken reporting path; the old value could fail uploads the transport was still legitimately retrying.
+
+## Fixes
+* Fixed a moment's video upload retrying forever when the upload connection was accepted and then dropped mid-transfer. It now gives up after a bounded number of reconnects and reports the failure. Previously the upload stayed pending indefinitely, which also blocked `ludeo_Session_Release` from completing, since session destruction waits for in-flight uploads.
+* Fixed the overlay stranding the player on a permanent "please keep the game open" message when an upload never completed; a stuck upload now falls back to the "Upload failed" result toast after the safety timeout.
+* Fixed the upload-pending flag not being cleared when the creator screen closes.
+* Fixed the in-process overlay showing the pre-play screen with an empty objective list. The objectives are now fetched over HTTP as soon as a Ludeo is selected, instead of waiting for the platform's `gameplays.gameplay-ready` event — which cannot arrive until the game has opened the room, so the list was always empty on first display.
+* Fixed the pre-play "Play Moment" button being clickable before the room was ready. Pressing it in that window sent an event the SDK could not act on, gameplay never started, and the button stayed disabled for the rest of the screen. It is now drawn disabled and ignores input until the room is ready.
 
 # v4.2.5
 
