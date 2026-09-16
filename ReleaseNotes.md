@@ -1,3 +1,9 @@
+# v4.2.8
+
+## Improvements
+* The Windows SDK DLL now carries company, product, description and copyright fields in its file properties.
+* Added Authenticode code signing to the Windows build pipeline.
+
 # v4.2.7
 
 ## New features
