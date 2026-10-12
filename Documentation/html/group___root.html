@@ -64,7 +64,7 @@
   <td id="projectlogo"><img alt="Logo" src="Ludeo_Logo.svg"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">LudeoSDK
-   &#160;<span id="projectnumber">4.2.8.0</span>
+   &#160;<span id="projectnumber">4.2.9.0</span>
    </div>
    <div id="projectbrief">LudeoSDK Core Api</div>
   </td>
@@ -266,7 +266,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ludeo_RemoveNotificat
 </li>
 </ul>
 <p><code>video-localsave</code></p><ul>
-<li><b>Description</b>: If set to true, it will cause videos to be saved locally as a raw h264 file before uploading. The videos will be saved as <code>LudeoVideoMessage-&lt;UTC TIMESTAMP&gt;.h264</code> files in the current working directory. Note that this should ONLY be used for debugging. This can be called at any time, and the change will affect any videos created after the command.</li>
+<li><b>Description</b>: If set to true, it will cause videos to be saved locally as a raw bitstream before uploading. The videos will be saved as <code>LudeoVideoMessage-&lt;UTC TIMESTAMP&gt;.av1</code> (or <code>.h264</code>) files in the current working directory. Note that this should ONLY be used for debugging. This can be called at any time, and the change will affect any videos created after the command.</li>
 <li><b>Value</b>:<ul>
 <li><code>"0"</code> - (default) Videos are not saved to files</li>
 <li><code>"1"</code> - Videos are saved to files before uploading</li>
@@ -274,13 +274,39 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ludeo_RemoveNotificat
 </li>
 </ul>
 <p><code>video-swencoder</code></p><ul>
-<li><b>Description</b>: Typically, the SDK tries to use any supported hardware encoders, and the software encoder is the fallback encoder. Setting this to true forces the use of the software encoder. It should be called before ludeo_Initialize</li>
+<li><b>Description</b>: Windows only (Android has no CPU encoder, so this does nothing there). The SDK uses a hardware encoder when one is available, and the libx264 CPU encoder otherwise. Setting this to true skips the hardware encoders. Takes effect the next time a video encoder starts (session activation, or a window resize), so call it before ludeo_Session_Activate. Can also be set on the command line (<code>-ludeoVideoSwEncoder=1</code>) or with the <code>LUDEO_VIDEO_SWENCODER</code> environment variable.</li>
 <li><b>Value</b>:<ul>
-<li><code>"0"</code> - (default) Will use an hardware encoder if available</li>
-<li><code>"1"</code> - Will use the software encoder.</li>
+<li><code>"0"</code> - (default) Use a hardware encoder if available</li>
+<li><code>"1"</code> - Use the libx264 CPU encoder</li>
 </ul>
 </li>
 </ul>
+<p><code>video-resolution</code></p><ul>
+<li><b>Description</b>: Debugging only. Overrides the video resolution the backend configured. Applied when the game configuration is parsed during session activation, so call it before ludeo_Session_Activate.</li>
+<li><b>Value</b>:<ul>
+<li><code>"&lt;width&gt;x&lt;height&gt;"</code> with even values up to 8192, e.g. <code>"1920x1080"</code></li>
+<li><code>""</code> or <code>"0"</code> - clear the override</li>
+</ul>
+</li>
+</ul>
+<p><code>video-bitrate</code></p><ul>
+<li><b>Description</b>: Debugging only. Overrides the video bitrate the backend configured. Applied when the game configuration is parsed during session activation, so call it before ludeo_Session_Activate.</li>
+<li><b>Value</b>:<ul>
+<li>Bits per second, digits only, up to 200000000, e.g. <code>"6000000"</code></li>
+<li><code>""</code> or <code>"0"</code> - clear the override</li>
+</ul>
+</li>
+</ul>
+<p><code>video-codec</code></p><ul>
+<li><b>Description</b>: Debugging only. Encode with only this codec (no fallback). Takes effect the next time a video encoder starts, so call it before ludeo_Session_Activate. Can also be set on the command line (<code>-ludeoVideoCodec=h264</code>) or with the <code>LUDEO_VIDEO_CODEC</code> environment variable.</li>
+<li><b>Value</b>:<ul>
+<li><code>""</code> - (default) AV1 if the backend enables it for the game, falling back to H.264</li>
+<li><code>"av1"</code> - AV1 only, even if the backend doesn't enable it</li>
+<li><code>"h264"</code> - H.264 only</li>
+</ul>
+</li>
+</ul>
+<p>The <code>-ludeoVideo*</code> command line options and <code>LUDEO_VIDEO_*</code> environment variables are read in ludeo_Session_Create and overwrite any value set earlier with ludeo_Command. A ludeo_Command call after ludeo_Session_Create wins.</p>
 <p><code>session-forcebetacode</code></p><ul>
 <li><b>Description</b>: Forces any Session activation to use this specific beta code. Can be used at any moment. Any subsequent ludeo_Session_Activate will then use it.</li>
 <li><b>Value</b>:<ul>

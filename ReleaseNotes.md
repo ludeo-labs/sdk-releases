@@ -1,3 +1,24 @@
+# v4.2.9
+
+## New features
+* Moments are now recorded in AV1 where the hardware supports it. On Windows the SDK tries NVENC AV1, then NVENC H.264, then the libx264 CPU encoder; on Android it tries MediaCodec AV1, then MediaCodec H.264. GPUs without AV1 support (pre-Ada NVIDIA, older Android devices) get H.264 as before. AMD, Intel and OpenGL games stay on libx264.
+* Encoding can be controlled per game from the backend (Studio Lab), under `videoEncoderConfig`:
+  * `hardwareEncoder` (default `true`): set `false` to keep a game on the libx264 CPU encoder.
+  * `av1Config.enabled` (default `true`): set `false` to keep a game on H.264.
+  * `av1Config` can also override `width`, `height`, `fps`, `bitrate`, `idrInterval`, `numEncodeBuffers` and `preset` (1-7) for AV1 only. Any field left out uses the top-level value. Older SDKs ignore `av1Config`.
+* New debug overrides: the `video-codec` (`av1` / `h264`), `video-resolution` and `video-bitrate` commands, plus the `-ludeoVideoCodec` / `LUDEO_VIDEO_CODEC`, `-ludeoVideoSwEncoder` / `LUDEO_VIDEO_SWENCODER` and `-ludeoVideoLocalSave` launch options for games that can't call `ludeo_Command`.
+
+## Improvements
+* If an encoder stops mid-session, it is shut down and replaced by the next one in the list (up to 3 times per recording session), instead of video stopping for the rest of the session.
+* Clips start closer to the marked moment: the 4x keyframe-interval multiplier on NVENC, AMF and MediaCodec was removed, since clips are cut on keyframes.
+* When the game window and the encode size have different aspect ratios, the video is letterboxed instead of stretched.
+
+## Fixes
+* Fixed a GPU hang (`DXGI_ERROR_DEVICE_HUNG`, then a crash in SDL) when recording a D3D11 game whose device isn't multithread-protected (e.g. SDL2 without `SDL_HINT_RENDER_DIRECT3D_THREADSAFE`). Encoder init now fails cleanly and logs the reason.
+* Fixed NVENC on D3D11 unmapping input textures on the download thread, which shares the game's immediate context.
+* Fixed the render thread sleeping, or waiting forever, for a free encode buffer when NVENC or libx264 fell behind. The frame is now dropped, and the encoder is marked as stopped if its download thread exits.
+* Fixed several NVENC and AMF shutdown and failure paths (double unmaps, buffers not returned to the pool, a single-producer queue used by two threads).
+
 # v4.2.8
 
 ## Improvements
