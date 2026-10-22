@@ -1,3 +1,11 @@
+# v4.2.10
+
+## New features
+* The overlay's in-game countdown now stops on the **Pause Timer** global trigger (`TIMER_PAUSE_KEY` / `TIMER_RESUME_KEY`) during local Ludeo playback. When the game pauses the timer, for example for a cutscene or dialogue, the countdown stops while the game and its events keep running, and it picks up again from the server's remaining time on **Resume Timer**. This needs the platform build that forwards the `pause-timer` / `resume-timer` events to the overlay.
+
+## Fixes
+* Fixed the countdown restarting too early when a game pause and a timer pause overlapped. It now restarts only after both have been resumed.
+
 # v4.2.9
 
 ## New features
